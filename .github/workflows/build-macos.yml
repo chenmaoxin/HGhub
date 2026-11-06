@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14 # GitHub 的 Apple Silicon Mac  runner
+    runs-on: macos-latest # GitHub 的 Apple Silicon Mac  runner
     steps:
       - name: 拉取 v1.0.0 源码
         uses: actions/checkout@v4
