@@ -1,0 +1,40 @@
+name: build-macos-dmg
+
+# 手动触发：在仓库 Actions 页选 build-macos-dmg → Run workflow
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14 # GitHub 的 Apple Silicon Mac  runner
+    steps:
+      - name: 拉取 v1.0.0 源码
+        uses: actions/checkout@v4
+        with:
+          ref: v1.0.0
+
+      - name: 准备 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: 准备 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: 准备 Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: 安装依赖
+        run: pnpm install
+
+      - name: 打包 dmg（覆盖仓库自带的 nsis 配置）
+        run: pnpm tauri build --bundles dmg
+
+      - name: 上传 dmg 成品
+        uses: actions/upload-artifact@v4
+        with:
+          name: HGhub-macos-dmg
+          path: src-tauri/target/release/bundle/dmg/*.dmg
