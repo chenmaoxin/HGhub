@@ -11,6 +11,7 @@ jobs:
       - name: 拉取 v1.0.0 源码
         uses: actions/checkout@v4
         with:
+          repository: Minireel/HGhub
           ref: v1.0.0
 
       - name: 准备 pnpm
